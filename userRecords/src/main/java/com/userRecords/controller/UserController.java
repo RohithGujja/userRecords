@@ -1,53 +1,70 @@
 package com.userRecords.controller;
 
+import java.util.Collections;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.userRecords.entity.User;
 import com.userRecords.repository.UserService;
+import com.userRecords.util.Gender;
 
-@RestController
-@RequestMapping(path = "/users")
+@Controller
 public class UserController {
 	
 	@Autowired
 	UserService userService;
 	
-	@GetMapping(path = "/getAllUsers")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return userService.getAllUsers();
+	@RequestMapping(path = "/")
+    public String start(Model model) {
+		return "redirect:/getAllUsers";
     }
 	
-	@GetMapping(path = "/getUser/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
-        return userService.gerUserById(id);
+	@RequestMapping(path = "/getAllUsers")
+    public String getAllUsers(Model model) {
+		List<User> userList = userService.getAllUsers();
+		Collections.sort(userList);
+		model.addAttribute("userList", userList);
+		return "index";
     }
 	
-	@PostMapping(path = "/addUser")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+	@RequestMapping(path = "/getUser/{id}")
+    public User getUser(@PathVariable("id") Integer id) {
+        return userService.getUserById(id);
     }
 	
-	@PutMapping("/updateUser/{id}")
-	public ResponseEntity<User> updateTutorial(@PathVariable("id") Integer id,@RequestBody User user) {
-		return userService.updateUser(user, id);
+	@RequestMapping(path = "/addUser")
+    public String addUser(Model model) {
+		model.addAttribute("userDetails", new User());
+		model.addAttribute("genderList", Gender.values());
+		return "createUser";
+    }
+	
+	@PostMapping(path = "/saveUser")
+    public String saveUser(@ModelAttribute("userDetails") User user) {
+        userService.createUser(user);
+        return "redirect:/getAllUsers";
+    }
+	
+	@RequestMapping("/editUserDetails/{id}")
+	public ModelAndView updateTutorial(@PathVariable("id") Integer id) {
+		ModelAndView view = new ModelAndView("editUser");
+		view.addObject("userDetails", userService.getUserById(id));
+		view.addObject("genderList", Gender.values());
+		return view;
 	}
 	
-	@DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity<User> deleteEmployeeById(@PathVariable("id") Integer id) {
-        return userService.deleteUserById(id);
+	@RequestMapping("/deleteUser/{id}")
+    public String deleteEmployeeById(@PathVariable("id") Integer id) {
+        userService.deleteUserById(id);
+        return "redirect:/getAllUsers";
     }
 
 }

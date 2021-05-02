@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>Edit User</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Edit User</h1>
+		<br/><br/>
+		<form th:action="@{/saveUser}" th:object="${userDetails}" method="post">
+			<table class="table table-bordered">
+				<tr class="form-group">
+					<td><label for="uid">User Id: </label></td>
+					<td><input id="uid" type="text" th:field="*{user_id}" readonly="readonly" class="form-control"></td>
+				</tr>
+				<tr class="form-group">
+					<td><label for="name">User Name: </label></td>
+					<td><input id="name" type="text" th:field="*{user_name}" required="required" class="form-control"></td>
+				</tr>
+				<tr class="form-group">
+					<td><label for="age">Age: </label></td>
+					<td><input id="age" type="text" th:field="*{age}" required="required" class="form-control"></td>
+				</tr>
+				<tr class="form-group">
+					<td><label for="gender">Gender: </label></td>
+					<td>
+						<select id="gender" th:field="*{gender}" class="form-control">
+						  <option th:each="value: ${genderList}" th:value="${value}" th:text="${value}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr class="form-group">
+					<td><label for="address">Address: </label></td>
+					<td><input id="address" type="text" th:field="*{address}" required="required" class="form-control"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button type="submit" class="btn btn-success">Update Details</button>
+						<button type="reset" class="btn btn-info">Reset Changes</button>
+					</td>
+				</tr>
+			</table>
+		
+		</form>
+	</div>
+</body>
+
+</html>

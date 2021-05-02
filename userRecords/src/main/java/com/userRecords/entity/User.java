@@ -15,10 +15,10 @@ import com.userRecords.util.Gender;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Comparable<User>{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer user_id;
 	
 	@NotBlank(message = "Name is Mandatory")
@@ -93,6 +93,17 @@ public class User {
 	public String toString() {
 		return "User [user_id=" + user_id + ", user_name=" + user_name + ", age=" + age + ", gender=" + gender
 				+ ", address=" + address + "]";
+	}
+
+	@Override
+	public int compareTo(User o) {
+		if(user_id==o.user_id) {
+			return 0;
+		}else if(user_id>o.user_id) {
+			return 1;
+		}else {
+			return -1;
+		}
 	}
 
 }

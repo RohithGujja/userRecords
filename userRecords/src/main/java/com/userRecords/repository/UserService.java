@@ -3,8 +3,6 @@ package com.userRecords.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.userRecords.exception.NotFoundException;
@@ -17,41 +15,22 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public ResponseEntity<List<User>> getAllUsers() {
+	public List<User> getAllUsers() {
         List<User> userList = userRepository.findAll();
-        if(userList.size() > 0) {
-        	return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
-        } else {
-        	throw new NotFoundException("Oops!!! No Users found");
-        }
+        return userList;
     }
 	
-    public ResponseEntity<User> gerUserById(Integer id) {
+    public User getUserById(Integer id) {
     	User user = userRepository.findById(id)
 				  		.orElseThrow(() -> new NotFoundException("Oops!!! No User details not found with user id: "+id));
-        return new ResponseEntity<User>(user,HttpStatus.OK);
-    } 
-    
-    public ResponseEntity<User> createUser(User user) {
-        User userEntity = userRepository.save(user);
-        return new ResponseEntity<User>(userEntity,HttpStatus.CREATED);
+        return user;
     }
-
-    public ResponseEntity<User> updateUser(User userEntity,Integer id) {
-    	User user = userRepository.findById(id)
-				  		.orElseThrow(() -> new NotFoundException("Oops!!! No User details not found with user id: "+id));
-        user.setUser_name(userEntity.getUser_name());
-        user.setAge(userEntity.getAge());
-        user.setGender(userEntity.getGender());
-        user.setAddress(userEntity.getAddress());
-        user = userRepository.save(user);
-        return new ResponseEntity<User>(user,HttpStatus.OK);
-    } 
     
-    public ResponseEntity<User> deleteUserById(Integer id) {
-        User user = userRepository.findById(id)
-        				.orElseThrow(() -> new NotFoundException("Oops!!! No User details not found with user id: "+id));
+    public void createUser(User user) {
+        userRepository.save(user);
+    }
+    
+    public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
-        return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 }

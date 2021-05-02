@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>Error!!!</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Request Failed!!!</h1>
+		<table class="table table-bordered">
+			<tr>
+				<td>Time Stamp:</td>
+				<td th:text="${error.timestamp}"></td>
+			</tr>
+			<tr>
+				<td>HTTP Status:</td>
+				<td th:text="${error.httpStatus}"></td>
+			</tr>
+			<tr>
+				<td>Error Details:</td>
+				<td th:text="${error.message}"></td>
+			</tr>
+		</table>
+		<a href="getAllUsers" class="btn btn-primary" role="button">Home</a>
+	</div>
+</body>
+
+</html>

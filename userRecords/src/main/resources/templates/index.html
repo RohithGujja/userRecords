@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<title>All Users</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+	<h1>User Details</h1>
+	<br/>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>User ID</th>
+				<th>User Name</th>
+				<th>Age</th>
+				<th>Gender</th>
+				<th>Address</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${userList}">
+				<td th:text="${user.user_id}"></td>
+				<td th:text="${user.user_name}"></td>
+				<td th:text="${user.age}"></td>
+				<td th:text="${user.gender}"></td>
+				<td th:text="${user.address}"></td>
+				<td>
+                	<a th:href="@{'/editUserDetails/' + ${user.user_id}}" class="btn btn-info" role="button">Edit</a>
+                	&nbsp;&nbsp;&nbsp;&nbsp;
+                	<a th:href="@{'/deleteUser/' + ${user.user_id}}" th:confirmDelete="|Are you sure you want to delete User Id: ${user.user_id} ?|"
+                	 onclick="return confirm(this.getAttribute('confirmDelete'))" class="btn btn-danger" role="button">Delete</a>
+                </td> 
+			</tr>
+		</tbody>
+	</table>
+	<br/>
+	<a href="addUser" class="btn btn-primary" role="button">Create New User</a>
+	</div>
+</body>
+
+</html>

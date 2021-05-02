@@ -4,26 +4,28 @@ package com.userRecords.exception;
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity<ErrorDetails> notFoundExceptionHandler(NotFoundException e,WebRequest request){
+	public String notFoundExceptionHandler(NotFoundException e, WebRequest request, Model model){
 		ErrorDetails error = new ErrorDetails(LocalDateTime.now(), HttpStatus.BAD_REQUEST, 
 												e.getMessage(), request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(error, HttpStatus.BAD_REQUEST);
+		model.addAttribute("error", error);
+		return "errorPage";
 	}
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorDetails> globalExceptionHandler(Exception e,WebRequest request){
+	public String globalExceptionHandler(Exception e, WebRequest request, Model model){
 		ErrorDetails error = new ErrorDetails(LocalDateTime.now(), HttpStatus.BAD_REQUEST, 
 												e.getMessage(), request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(error, HttpStatus.BAD_REQUEST);
+		model.addAttribute("error", error);
+		return "errorPage";
 	}
 
 }

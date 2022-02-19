@@ -1,3 +1,3 @@
 # userRecords
 
-Spring Application
+Spring Application for User Records

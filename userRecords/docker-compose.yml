@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  userdetails:
+    image: mysql
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+  userapp:
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - userdetails
+
